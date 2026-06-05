@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive CPU Scheduling Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Interactive CPU Scheduling Simulator</h1>
+        
+        <div class="card preset-section">
+            <h2>⚡ Quick Test Cases (Presets)</h2>
+            <div class="preset-buttons">
+                <button type="button" class="btn-secondary" onclick="loadPreset('standard')">Standard Mix</button>
+                <button type="button" class="btn-secondary" onclick="loadPreset('convoy')">FCFS Convoy Effect</button>
+                <button type="button" class="btn-secondary" onclick="loadPreset('preemptive')">Preemptive Challenge</button>
+            </div>
+        </div>
+
+        <div class="card config-section">
+            <h2>1. Choose Algorithm & Parameters</h2>
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="algo">Scheduling Algorithm:</label>
+                    <select id="algo">
+                        <option value="fcfs">First Come First Served (FCFS)</option>
+                        <option value="sjf">Shortest Job First (SJF)</option>
+                        <option value="srtf">Shortest Remaining Time First (SRTF)</option>
+                        <option value="priority-np">Priority Scheduling (Non-Preemptive)</option>
+                        <option value="priority-p">Priority Scheduling (Preemptive)</option>
+                        <option value="rr">Round Robin (RR)</option>
+                        <option value="hrrn">Highest Response Ratio Next (HRRN)</option>
+                    </select>
+                </div>
+                <div class="form-group id-conditional" id="tq-group" style="display: none;">
+                    <label for="time-quantum">Time Quantum:</label>
+                    <input type="number" id="time-quantum" min="1" value="2">
+                </div>
+            </div>
+        </div>
+
+        <div class="card process-section">
+            <h2>2. Manage Processes</h2>
+            <form id="process-form">
+                <div class="form-inputs">
+                    <div class="form-group">
+                        <label for="pid">Process ID:</label>
+                        <input type="text" id="pid" placeholder="e.g. P1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="at">Arrival Time (AT):</label>
+                        <input type="number" id="at" min="0" value="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bt">Burst Time (BT):</label>
+                        <input type="number" id="bt" min="1" value="5" required>
+                    </div>
+                    <div class="form-group id-conditional" id="priority-group" style="display: none;">
+                        <label for="priority">Priority (Lower = Higher):</label>
+                        <input type="number" id="priority" min="0" value="1">
+                    </div>
+                    <button type="submit" id="add-btn">Add Process</button>
+                </div>
+            </form>
+
+            <table id="input-table">
+                <thead>
+                    <tr>
+                        <th>Process Map</th>
+                        <th>Process ID</th>
+                        <th>Arrival Time</th>
+                        <th>Burst Time</th>
+                        <th class="priority-col" style="display: none;">Priority</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="input-tbody">
+                    </tbody>
+            </table>
+            
+            <div class="action-buttons">
+                <button id="simulate-btn" class="btn-success">▶ Run Simulation</button>
+                <button id="clear-btn" class="btn-danger">🧹 Clear All</button>
+            </div>
+        </div>
+
+        <div id="output-section" style="display: none;">
+            <div class="card">
+                <h2>Gantt Chart Timeline</h2>
+                <div class="gantt-container" id="gantt-chart">
+                    </div>
+            </div>
+
+            <div class="card">
+                <h2>Calculation Results Table</h2>
+                <div class="table-responsive">
+                    <table id="result-table">
+                        <thead>
+                            <tr>
+                                <th>Process ID</th>
+                                <th>Arrival Time (AT)</th>
+                                <th>Burst Time (BT)</th>
+                                <th class="priority-col" style="display: none;">Priority</th>
+                                <th>Completion Time (CT)</th>
+                                <th>Turnaround Time (TAT)</th>
+                                <th>Waiting Time (WT)</th>
+                                <th>Response Time (RT)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="result-tbody">
+                            </tbody>
+                    </table>
+                </div>
+
+                <div class="averages-summary">
+                    <div class="metric-card tat-card">
+                        <span class="metric-label">Average Turnaround Time</span>
+                        <span class="metric-value" id="avg-tat">0</span><span class="unit">ms</span>
+                    </div>
+                    <div class="metric-card wt-card">
+                        <span class="metric-label">Average Waiting Time</span>
+                        <span class="metric-value" id="avg-wt">0</span><span class="unit">ms</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
